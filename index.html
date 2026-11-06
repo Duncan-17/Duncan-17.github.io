@@ -102,7 +102,7 @@
   .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: auto 0 14px; padding-top: 6px; }
   .tag { font: 12px var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; }
   .links { display: flex; gap: 18px; font: 600 14px var(--mono); }
-  .badge { font: 600 11px var(--mono); color: #f0b429; border: 1px solid rgba(240,180,41,.4); border-radius: 6px; padding: 1px 7px; margin-left: 8px; vertical-align: 3px; }
+  .badge { white-space: nowrap; font: 600 11px var(--mono); color: #f0b429; border: 1px solid rgba(240,180,41,.4); border-radius: 6px; padding: 1px 7px; margin-left: 8px; vertical-align: 3px; }
 
 
 
@@ -111,6 +111,7 @@
     --swiper-pagination-bullet-inactive-color: #9aa5b1; --swiper-pagination-bottom: 14px; }
   .shots .swiper-slide { width: 86%; aspect-ratio: 1.915; border-radius: 10px; overflow: hidden; background: #0a0e13;
     box-shadow: 0 20px 50px rgba(0,0,0,.6); position: relative; }
+  .shots.portrait .swiper-slide { width: 44%; aspect-ratio: 0.82; }
   .shots img { display: block; width: 100%; height: 100%; object-fit: contain; background: #0a0e13; user-select: none; }
   .shots .cap { position: absolute; left: 10px; bottom: 10px; font: 12px var(--mono); background: rgba(13,17,23,.85); color: var(--text);
     padding: 3px 8px; border-radius: 6px; }
@@ -134,6 +135,7 @@
   .media:fullscreen { background: #05080c; display: flex; align-items: center; justify-content: center; }
   .is-full .swiper.shots { padding: 0 0 56px; }
   .is-full .shots .swiper-slide { width: min(92vw, calc((100vh - 110px) * 1.915)); }
+  .is-full .shots.portrait .swiper-slide { width: min(92vw, calc((100vh - 110px) * 0.82)); }
   .is-full .fs-btn { right: 20px; bottom: 16px; }
   body.no-scroll { overflow: hidden; }
 
@@ -188,6 +190,7 @@
 
   @media (max-width: 760px) {
     .shots .swiper-slide { width: 90%; }
+    .shots.portrait .swiper-slide { width: 78%; }
     .shots .swiper-button-prev, .shots .swiper-button-next { display: none; }
     .card .body { grid-template-columns: 1fr; }
     .card .body > ul { grid-column: 1; grid-row: auto; }
@@ -281,10 +284,10 @@
           <div class="media">
             <div class="swiper shots" role="region" aria-label="United Clash Dashboard screenshots">
               <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="assets/dashboard-920.jpg" srcset="assets/dashboard-920.jpg 920w, assets/dashboard-1200.jpg 1200w" sizes="(max-width: 760px) 90vw, 920px" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1900" height="992"><span class="cap">Data tab</span></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Live tab</b><small>placeholder</small></div></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Graphic tab</b><small>placeholder</small></div></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Analysis tab</b><small>placeholder</small></div></div>
+                <div class="swiper-slide"><img src="assets/dashboard/data-920.jpg" srcset="assets/dashboard/data-920.jpg 920w, assets/dashboard/data-1200.jpg 1200w" sizes="(max-width: 760px) 90vw, 920px" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1200" height="623"><span class="cap">Data tab</span></div>
+                <div class="swiper-slide"><img src="assets/dashboard/graphic-920.jpg" srcset="assets/dashboard/graphic-920.jpg 920w, assets/dashboard/graphic-1200.jpg 1200w, assets/dashboard/graphic-1500.jpg 1500w, assets/dashboard/graphic-1899.jpg 1899w" sizes="(max-width: 760px) 90vw, 920px" alt="Graphic tab: average fame per player for each war against the all-time average, with an expandable chart per member" loading="lazy" width="1899" height="941"><span class="cap">Graphic tab</span></div>
+                <div class="swiper-slide"><img src="assets/dashboard/analysis-920.jpg" srcset="assets/dashboard/analysis-920.jpg 920w, assets/dashboard/analysis-1200.jpg 1200w, assets/dashboard/analysis-1500.jpg 1500w, assets/dashboard/analysis-1900.jpg 1900w" sizes="(max-width: 760px) 90vw, 920px" alt="Analysis tab: member cards with participation, fame per war, consistency and a value score that drives promotions" loading="lazy" width="1900" height="913"><span class="cap">Analysis tab</span></div>
+                <div class="swiper-slide"><img src="assets/dashboard/decks-920.jpg" srcset="assets/dashboard/decks-920.jpg 920w, assets/dashboard/decks-1200.jpg 1200w, assets/dashboard/decks-1500.jpg 1500w, assets/dashboard/decks-1915.jpg 1915w" sizes="(max-width: 760px) 90vw, 920px" alt="Deck history: each deck a member used in war, with win-loss record, win rate and trend" loading="lazy" width="1915" height="941"><span class="cap">Deck history</span></div>
               </div>
               <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
               <button class="fs-btn" type="button" aria-label="View screenshots full screen" title="Full screen"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="i-open" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="i-close" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
@@ -306,12 +309,10 @@
 
         <article class="reveal card">
           <div class="media">
-            <div class="swiper shots" role="region" aria-label="Clash Royale AI Bot screenshots">
+            <div class="swiper shots portrait" role="region" aria-label="Clash Royale AI Bot screenshots">
               <div class="swiper-wrapper">
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 1</b><small>placeholder</small></div></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 2</b><small>placeholder</small></div></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 3</b><small>placeholder</small></div></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 4</b><small>placeholder</small></div></div>
+                <div class="swiper-slide"><img src="assets/bot/tracker-480.jpg" srcset="assets/bot/tracker-480.jpg 480w, assets/bot/tracker-740.jpg 740w" sizes="(max-width: 760px) 80vw, 470px" alt="Detector view: YOLOv8 boxes and tracker IDs on enemy and friendly units, with a side panel of what the bot sees" loading="lazy" width="740" height="1004"><span class="cap">Detector + tracker</span></div>
+                <div class="swiper-slide"><img src="assets/bot/perception-480.jpg" srcset="assets/bot/perception-480.jpg 480w, assets/bot/perception-754.jpg 754w" sizes="(max-width: 760px) 80vw, 470px" alt="Full perception view: units, tower health, elixir and the cards in hand, all read from the screen" loading="lazy" width="754" height="830"><span class="cap">Full perception</span></div>
               </div>
               <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
               <button class="fs-btn" type="button" aria-label="View screenshots full screen" title="Full screen"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="i-open" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="i-close" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
@@ -499,7 +500,8 @@
   }
   document.querySelectorAll('.shots').forEach(function (el) {
     new Swiper(el, {
-      effect: 'creative', centeredSlides: true, slidesPerView: 'auto', loop: true, grabCursor: true,
+      effect: 'creative', centeredSlides: true, slidesPerView: 'auto', grabCursor: true,
+      loop: el.querySelectorAll('.swiper-slide').length >= 3, rewind: el.querySelectorAll('.swiper-slide').length < 3,
       speed: reduce ? 0 : 900, keyboard: { enabled: true, onlyInViewport: true },
       autoplay: reduce ? false : { delay: 3600, disableOnInteraction: false, pauseOnMouseEnter: true },
       creativeEffect: { limitProgress: 2,
