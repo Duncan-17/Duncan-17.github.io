@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duncan Canzano · Software &amp; Security</title>
+<meta name="description" content="Duncan Canzano: Computer Science (Cybersecurity) at Michigan State, Class of 2027. Projects, resume, and contact.">
+<meta property="og:title" content="Duncan Canzano · Software & Security">
+<meta property="og:description" content="CS + Cybersecurity at Michigan State, Class of 2027. Projects, resume, and contact.">
+<meta property="og:image" content="https://duncan-17.github.io/assets/mealprep.jpg">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d1117'/><text x='16' y='22' font-family='monospace' font-size='16' font-weight='700' fill='%2358d68d' text-anchor='middle'>DC</text></svg>">
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --line: #2a313c;
+    --text: #e6edf3;
+    --muted: #9aa5b1;
+    --accent: #58d68d;
+    --accent-dim: rgba(88, 214, 141, 0.12);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* nav */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(13, 17, 23, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .logo { font: 700 15px var(--mono); color: var(--text); }
+  .logo span { color: var(--accent); }
+  nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; font: 14px var(--mono); }
+  nav ul a { color: var(--muted); }
+  nav ul a:hover { color: var(--text); text-decoration: none; }
+
+  /* hero */
+  .hero { padding: 96px 0 72px; }
+  .prompt { font: 14px var(--mono); color: var(--accent); margin: 0 0 14px; }
+  h1 { font-size: clamp(38px, 7vw, 60px); line-height: 1.08; margin: 0 0 16px; letter-spacing: -0.02em; }
+  .tagline { font-size: clamp(18px, 2.4vw, 21px); color: var(--muted); max-width: 640px; margin: 0 0 28px; }
+  .seeking {
+    display: inline-flex; align-items: center; gap: 10px;
+    font: 14px var(--mono); color: var(--text);
+    background: var(--accent-dim); border: 1px solid rgba(88, 214, 141, 0.35);
+    padding: 8px 14px; border-radius: 999px; margin-bottom: 32px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(88,214,141,.18); flex: none; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block; font: 600 14px var(--mono);
+    padding: 11px 18px; border-radius: 8px; border: 1px solid var(--line);
+    color: var(--text); background: var(--panel);
+  }
+  .btn:hover { border-color: var(--accent); text-decoration: none; }
+  .btn.primary { background: var(--accent); color: #07140c; border-color: var(--accent); }
+  .btn.primary:hover { filter: brightness(1.08); }
+
+  /* sections */
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  h2 { font: 600 14px var(--mono); color: var(--accent); text-transform: lowercase; letter-spacing: 0.04em; margin: 0 0 22px; }
+  h2::before { content: "## "; color: var(--muted); }
+  .about p { max-width: 700px; margin: 0 0 14px; font-size: 17px; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 24px; }
+  .fact { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .fact b { display: block; font: 600 12px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+
+  /* projects */
+  .projects { display: grid; gap: 22px; }
+  .card {
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 0;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+  }
+  .card:hover { border-color: #3a4350; }
+  .card .media { background: #0a0e13; border-right: 1px solid var(--line); display: flex; align-items: center; justify-content: center; min-height: 220px; }
+  .card .media img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+  .card .body { padding: 24px 26px; display: flex; flex-direction: column; }
+  .card h3 { margin: 0 0 4px; font-size: 21px; }
+  .meta { font: 13px var(--mono); color: var(--muted); margin: 0 0 12px; }
+  .card p { margin: 0 0 12px; color: #cdd5de; }
+  .card ul { margin: 0 0 14px; padding-left: 18px; color: #cdd5de; }
+  .card li { margin-bottom: 4px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: auto 0 14px; padding-top: 6px; }
+  .tag { font: 12px var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; }
+  .links { display: flex; gap: 18px; font: 600 14px var(--mono); }
+  .badge { font: 600 11px var(--mono); color: #f0b429; border: 1px solid rgba(240,180,41,.4); border-radius: 6px; padding: 1px 7px; margin-left: 8px; vertical-align: 3px; }
+
+  /* code-style media panels for projects without screenshots */
+  .term { width: 100%; padding: 22px; font: 13px/1.7 var(--mono); color: var(--muted); }
+  .term .c { color: #6e7681; }
+  .term .k { color: var(--accent); }
+  .term .s { color: #79c0ff; }
+  .term .w { color: var(--text); }
+
+  /* small cards row */
+  .card.compact { grid-template-columns: 1fr; }
+
+  /* experience & skills */
+  .job { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 6px; }
+  .job h3 { margin: 0; font-size: 18px; }
+  .job span { font: 13px var(--mono); color: var(--muted); }
+  .exp ul { margin: 10px 0 0; padding-left: 18px; color: #cdd5de; max-width: 760px; }
+  .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .skillset { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+  .skillset b { display: block; font: 600 12px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .skillset .tags { margin: 0; padding: 0; }
+  .skillset .tag { color: var(--text); }
+
+  /* contact */
+  .contact p { max-width: 640px; font-size: 17px; margin: 0 0 22px; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 13px; color: #6e7681; }
+  footer p { margin: 0 0 6px; }
+
+  @media (max-width: 760px) {
+    nav ul { display: none; }
+    .hero { padding: 64px 0 48px; }
+    .card { grid-template-columns: 1fr; }
+    .card .media { border-right: 0; border-bottom: 1px solid var(--line); min-height: 0; }
+    .card .media img { max-height: 260px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="#top">duncan<span>@</span>canzano<span>:~$</span></a>
+    <ul>
+      <li><a href="#about">about</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#experience">experience</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="top">
+  <header class="hero">
+    <div class="wrap">
+      <p class="prompt">$ whoami</p>
+      <h1>Duncan Canzano</h1>
+      <p class="tagline">Computer Science (Cybersecurity) at Michigan State, Class of 2027. I like building practical tools for problems I actually have, and making them secure enough to put in front of real users.</p>
+      <div class="seeking"><span class="dot" aria-hidden="true"></span>Looking for full-time software, security &amp; tech consulting roles from summer 2027, Chicago preferred</div>
+      <div class="ctas">
+        <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        <a class="btn" href="https://github.com/Duncan-17" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://linkedin.com/in/duncan-canzano" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="mailto:dncanzano@icloud.com">Email</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about" class="about">
+    <div class="wrap">
+      <h2>about</h2>
+      <p>I'm a senior at Michigan State studying Computer Science with a cybersecurity concentration and a minor in business. Last summer I interned on Dana-Farber Cancer Institute's Hospital Information Systems team, writing Python automation and working inside a 40,000+ line laboratory system under HIPAA constraints.</p>
+      <p>Outside class I build things people actually use: a stats dashboard my 50-member clan's leaders run their roster decisions on, a meal-planning app I use every day, and a computer-vision bot that learns to play a game from raw pixels. I use AI tools like Claude Code as a pair programmer. I own the design, the review and the testing.</p>
+      <div class="facts">
+        <div class="fact"><b>School</b>Michigan State University, College of Engineering</div>
+        <div class="fact"><b>Degree</b>B.S. Computer Science, Cybersecurity · Business minor</div>
+        <div class="fact"><b>Graduating</b>May 2027 · GPA 3.5</div>
+        <div class="fact"><b>Based in</b>East Lansing, MI · from Boston</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <h2>projects</h2>
+      <div class="projects">
+
+        <article class="card">
+          <div class="media"><img src="assets/mealprep.jpg" alt="Meal Prep app diary screen: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1200" height="626"></div>
+          <div class="body">
+            <h3>Meal Prep</h3>
+            <p class="meta">Fall 2026 · in daily use</p>
+            <p>An offline-first meal-planning web app: build recipes from USDA data, schedule cooks on a calendar, track leftovers as fridge stock, and log meals against a full nutrient plan.</p>
+            <ul>
+              <li>User accounts with per-user sync; passwords are stretched with Argon2id in the browser, so the server never sees one</li>
+              <li>Strict CSP, rate limiting, CodeQL in CI and a written threat model</li>
+              <li>594 automated tests; works with no signal and syncs through Cloudflare D1</li>
+            </ul>
+            <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Cloudflare Workers + D1</span><span class="tag">IndexedDB</span><span class="tag">Vitest</span></div>
+            <div class="links"><a href="https://github.com/Duncan-17/meal-prep-app" target="_blank" rel="noopener">Code →</a></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media"><img src="assets/dashboard.jpg" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1200" height="623"></div>
+          <div class="body">
+            <h3>United Clash Dashboard</h3>
+            <p class="meta">Summer 2026 · live</p>
+            <p>A war-performance dashboard for my 50-member Clash Royale clan. It tracks every player across every war and recommends promotions and kicks from a scoring model I designed with the clan's leaders.</p>
+            <ul>
+              <li>Leadership uses it for roster decisions; the clan climbed to #120 on the international leaderboard</li>
+              <li>A scheduled Apps Script pipeline builds the long-term history the game's API doesn't keep</li>
+              <li>A Cloudflare Worker proxy keeps the API key out of the browser</li>
+            </ul>
+            <div class="tags"><span class="tag">JavaScript</span><span class="tag">Google Apps Script</span><span class="tag">Cloudflare Pages</span><span class="tag">PWA</span></div>
+            <div class="links"><a href="https://unitedclash.pages.dev" target="_blank" rel="noopener">Live site →</a><a href="https://github.com/Duncan-17/clash-royale-clan-dashboard" target="_blank" rel="noopener">Code →</a></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media">
+            <pre class="term" aria-label="Bot pipeline: emulator screenshot to perception to game state to policy to tap"><span class="c"># perceive → decide → act</span>
+<span class="k">frame</span>  = adb.<span class="w">screenshot</span>()      <span class="c"># LDPlayer</span>
+<span class="k">units</span>  = yolov8.<span class="w">detect</span>(frame)  <span class="c"># custom v4</span>
+<span class="k">state</span>  = tracker.<span class="w">update</span>(units)
+<span class="k">action</span> = policy.<span class="w">choose</span>(state)
+adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span class="s">xy</span>)</pre>
+          </div>
+          <div class="body">
+            <h3>Clash Royale AI Bot <span class="badge">in progress</span></h3>
+            <p class="meta">Aug 2026 – present · research project</p>
+            <p>A bot that plays from raw screen pixels, with no memory reading or private APIs. It sees the same screen a player does. I'm building it solo to learn computer vision, ML training, and how to wire open-source tools into one system.</p>
+            <ul>
+              <li>Custom-trained YOLOv8 detector that beats the open-source KataCR model on recall</li>
+              <li>Tracker for stable unit IDs, plus opponent card-cycle reconstruction</li>
+              <li>Unattended pipeline logging top players' matches as imitation-learning data</li>
+            </ul>
+            <div class="tags"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">YOLOv8</span><span class="tag">OpenCV</span><span class="tag">ONNX Runtime</span><span class="tag">ADB</span></div>
+            <div class="links"><a href="https://github.com/Duncan-17/clash-royale-ai-bot" target="_blank" rel="noopener">Code →</a></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media">
+            <pre class="term" aria-label="Platformer feature summary"><span class="c">// GameMaker Studio 2 · 2020–21</span>
+<span class="k">weapons</span>  = [<span class="s">pistol</span>, <span class="s">shotgun</span>, <span class="s">rifle</span>, <span class="s">laser</span>]
+<span class="k">enemies</span>  = <span class="w">7</span> types, own state machines
+<span class="k">rooms</span>    = <span class="w">5</span> + menu, checkpoints
+<span class="k">fix</span>      = blood fx → draw to layers
+<span class="c">// where I learned to code</span></pre>
+          </div>
+          <div class="body">
+            <h3>GameMaker Platformer</h3>
+            <p class="meta">High school · 2020–2021</p>
+            <p>A 2D action platformer, and where I first learned to program: build a feature, break it, fix it, one commit at a time.</p>
+            <ul>
+              <li>First state machines, for the laser and several enemies</li>
+              <li>Fixed a game-breaking lag by rewriting the blood effect to draw onto layers instead of spawning thousands of objects</li>
+            </ul>
+            <div class="tags"><span class="tag">GML</span><span class="tag">GameMaker Studio 2</span></div>
+            <div class="links"><a href="https://github.com/Duncan-17/gamemaker-platformer" target="_blank" rel="noopener">Code →</a></div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="exp">
+    <div class="wrap">
+      <h2>experience</h2>
+      <div class="job">
+        <h3>Dana-Farber Cancer Institute · Hospital Information Systems Intern</h3>
+        <span>Boston, MA · May – Aug 2025</span>
+      </div>
+      <ul>
+        <li>Built Python automation tools in the ESP framework to replace manual lab data transfers, saving an estimated dozens of hours a year</li>
+        <li>Refactored core modules of a 40,000+ line JavaScript laboratory management system (L7 LIMS ESP)</li>
+        <li>Developed and deployed in a Docker-based environment under HIPAA compliance and data-security constraints</li>
+        <li>Co-designed a terminal-based automated installation framework with the team's lead developer</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <h2>skills</h2>
+      <div class="skills">
+        <div class="skillset"><b>Languages</b><div class="tags"><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">Java</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">SQL</span></div></div>
+        <div class="skillset"><b>Tools &amp; platforms</b><div class="tags"><span class="tag">Git/GitHub</span><span class="tag">Docker</span><span class="tag">Linux/Bash</span><span class="tag">React</span><span class="tag">Cloudflare</span><span class="tag">VS Code</span></div></div>
+        <div class="skillset"><b>AI &amp; ML</b><div class="tags"><span class="tag">Claude Code</span><span class="tag">YOLOv8</span><span class="tag">PyTorch</span><span class="tag">OpenCV</span><span class="tag">ONNX Runtime</span></div></div>
+        <div class="skillset"><b>Security</b><div class="tags"><span class="tag">Threat modeling</span><span class="tag">CSP &amp; headers</span><span class="tag">Rate limiting</span><span class="tag">CodeQL</span><span class="tag">Argon2id auth</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>contact</h2>
+      <p>I'm graduating in May 2027 and interviewing now. The best way to reach me is email.</p>
+      <div class="ctas">
+        <a class="btn primary" href="mailto:dncanzano@icloud.com">dncanzano@icloud.com</a>
+        <a class="btn" href="https://linkedin.com/in/duncan-canzano" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/Duncan-17" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Duncan Canzano · Hosted on GitHub Pages.</p>
+    <p>Clash Royale projects: this material is unofficial and is not endorsed by Supercell. For more information see Supercell's Fan Content Policy: <a href="https://www.supercell.com/fan-content-policy" target="_blank" rel="noopener">www.supercell.com/fan-content-policy</a>.</p>
+  </div>
+</footer>
+
+</body>
+</html>
