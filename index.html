@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Duncan Canzano · Software &amp; Security</title>
 <meta name="description" content="Duncan Canzano: Computer Science (Cybersecurity) at Michigan State, Class of 2027. Projects, resume, and contact.">
@@ -75,7 +76,6 @@
   /* sections */
   section { padding: 56px 0; border-top: 1px solid var(--line); }
   h2 { font: 600 14px var(--mono); color: var(--accent); text-transform: lowercase; letter-spacing: 0.04em; margin: 0 0 22px; }
-  h2::before { content: "## "; color: var(--muted); }
   .about p { max-width: 700px; margin: 0 0 14px; font-size: 17px; }
   .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 24px; }
   .fact { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
@@ -127,8 +127,40 @@
   footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 13px; color: #6e7681; }
   footer p { margin: 0 0 6px; }
 
+
+  /* hero background (Vanta 3D net on desktop, light 2D canvas on phones) */
+  .hero { position: relative; overflow: hidden; }
+  .hero > .wrap { position: relative; z-index: 1; }
+  #hero-bg { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity 1.2s ease; pointer-events: none; }
+  #hero-bg.on { opacity: .55; }
+  #hero-bg canvas { display: block; }
+  .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; z-index: 0;
+    background: linear-gradient(to bottom, rgba(13,17,23,0), var(--bg)); pointer-events: none; }
+  .hero .tagline, .hero h1 { text-shadow: 0 2px 18px rgba(13,17,23,.9); }
+
+  /* scroll reveal (only when JS runs, so the page never hides content without it) */
+  .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  /* cursor spotlight on cards */
+  .card, .fact, .skillset { position: relative; }
+  .card::before, .skillset::before, .fact::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(88,214,141,.10), transparent 60%);
+  }
+  .card:hover::before, .skillset:hover::before, .fact:hover::before { opacity: 1; }
+  .card:hover { border-color: rgba(88,214,141,.45); }
+  .card > * { position: relative; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    #hero-bg { display: none; }
+  }
+
   @media (max-width: 760px) {
     nav ul { display: none; }
+    .seeking { border-radius: 14px; align-items: flex-start; }
+    .seeking .dot { margin-top: 6px; }
     .hero { padding: 64px 0 48px; }
     .card { grid-template-columns: 1fr; }
     .card .media { border-right: 0; border-bottom: 1px solid var(--line); min-height: 0; }
@@ -141,7 +173,7 @@
 
 <nav aria-label="Main">
   <div class="wrap">
-    <a class="logo" href="#top">duncan<span>@</span>canzano<span>:~$</span></a>
+    <a class="logo" href="#top">Duncan Canzano</a>
     <ul>
       <li><a href="#about">about</a></li>
       <li><a href="#projects">projects</a></li>
@@ -154,11 +186,11 @@
 
 <main id="top">
   <header class="hero">
+    <div id="hero-bg" aria-hidden="true"></div>
     <div class="wrap">
-      <p class="prompt">$ whoami</p>
       <h1>Duncan Canzano</h1>
       <p class="tagline">Computer Science (Cybersecurity) at Michigan State, Class of 2027. I like building practical tools for problems I actually have, and making them secure enough to put in front of real users.</p>
-      <div class="seeking"><span class="dot" aria-hidden="true"></span>Looking for full-time software, security &amp; tech consulting roles from summer 2027, Chicago preferred</div>
+      <div class="seeking"><span class="dot" aria-hidden="true"></span>Looking for full-time software, security &amp; tech consulting roles starting summer 2027</div>
       <div class="ctas">
         <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
         <a class="btn" href="https://github.com/Duncan-17" target="_blank" rel="noopener">GitHub</a>
@@ -170,24 +202,24 @@
 
   <section id="about" class="about">
     <div class="wrap">
-      <h2>about</h2>
+      <h2 class="reveal">about</h2>
       <p>I'm a senior at Michigan State studying Computer Science with a cybersecurity concentration and a minor in business. Last summer I interned on Dana-Farber Cancer Institute's Hospital Information Systems team, writing Python automation and working inside a 40,000+ line laboratory system under HIPAA constraints.</p>
       <p>Outside class I build things people actually use: a stats dashboard my 50-member clan's leaders run their roster decisions on, a meal-planning app I use every day, and a computer-vision bot that learns to play a game from raw pixels. I use AI tools like Claude Code as a pair programmer. I own the design, the review and the testing.</p>
       <div class="facts">
-        <div class="fact"><b>School</b>Michigan State University, College of Engineering</div>
-        <div class="fact"><b>Degree</b>B.S. Computer Science, Cybersecurity · Business minor</div>
-        <div class="fact"><b>Graduating</b>May 2027 · GPA 3.5</div>
-        <div class="fact"><b>Based in</b>East Lansing, MI · from Boston</div>
+        <div class="reveal fact"><b>School</b>Michigan State University, College of Engineering</div>
+        <div class="reveal fact"><b>Degree</b>B.S. Computer Science, Cybersecurity · Business minor</div>
+        <div class="reveal fact"><b>Graduating</b>May 2027 · GPA 3.5</div>
+        <div class="reveal fact"><b>Based in</b>East Lansing, MI · from Boston</div>
       </div>
     </div>
   </section>
 
   <section id="projects">
     <div class="wrap">
-      <h2>projects</h2>
+      <h2 class="reveal">projects</h2>
       <div class="projects">
 
-        <article class="card">
+        <article class="reveal card">
           <div class="media"><img src="assets/mealprep.jpg" alt="Meal Prep app diary screen: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1200" height="626"></div>
           <div class="body">
             <h3>Meal Prep</h3>
@@ -203,7 +235,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="reveal card">
           <div class="media"><img src="assets/dashboard.jpg" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1200" height="623"></div>
           <div class="body">
             <h3>United Clash Dashboard</h3>
@@ -219,7 +251,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="reveal card">
           <div class="media">
             <pre class="term" aria-label="Bot pipeline: emulator screenshot to perception to game state to policy to tap"><span class="c"># perceive → decide → act</span>
 <span class="k">frame</span>  = adb.<span class="w">screenshot</span>()      <span class="c"># LDPlayer</span>
@@ -242,7 +274,7 @@ adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span 
           </div>
         </article>
 
-        <article class="card">
+        <article class="reveal card">
           <div class="media">
             <pre class="term" aria-label="Platformer feature summary"><span class="c">// GameMaker Studio 2 · 2020–21</span>
 <span class="k">weapons</span>  = [<span class="s">pistol</span>, <span class="s">shotgun</span>, <span class="s">rifle</span>, <span class="s">laser</span>]
@@ -270,8 +302,8 @@ adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span 
 
   <section id="experience" class="exp">
     <div class="wrap">
-      <h2>experience</h2>
-      <div class="job">
+      <h2 class="reveal">experience</h2>
+      <div class="job reveal">
         <h3>Dana-Farber Cancer Institute · Hospital Information Systems Intern</h3>
         <span>Boston, MA · May – Aug 2025</span>
       </div>
@@ -286,19 +318,19 @@ adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span 
 
   <section id="skills">
     <div class="wrap">
-      <h2>skills</h2>
+      <h2 class="reveal">skills</h2>
       <div class="skills">
-        <div class="skillset"><b>Languages</b><div class="tags"><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">Java</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">SQL</span></div></div>
-        <div class="skillset"><b>Tools &amp; platforms</b><div class="tags"><span class="tag">Git/GitHub</span><span class="tag">Docker</span><span class="tag">Linux/Bash</span><span class="tag">React</span><span class="tag">Cloudflare</span><span class="tag">VS Code</span></div></div>
-        <div class="skillset"><b>AI &amp; ML</b><div class="tags"><span class="tag">Claude Code</span><span class="tag">YOLOv8</span><span class="tag">PyTorch</span><span class="tag">OpenCV</span><span class="tag">ONNX Runtime</span></div></div>
-        <div class="skillset"><b>Security</b><div class="tags"><span class="tag">Threat modeling</span><span class="tag">CSP &amp; headers</span><span class="tag">Rate limiting</span><span class="tag">CodeQL</span><span class="tag">Argon2id auth</span></div></div>
+        <div class="reveal skillset"><b>Languages</b><div class="tags"><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">Java</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">SQL</span></div></div>
+        <div class="reveal skillset"><b>Tools &amp; platforms</b><div class="tags"><span class="tag">Git/GitHub</span><span class="tag">Docker</span><span class="tag">Linux/Bash</span><span class="tag">React</span><span class="tag">Cloudflare</span><span class="tag">VS Code</span></div></div>
+        <div class="reveal skillset"><b>AI &amp; ML</b><div class="tags"><span class="tag">Claude Code</span><span class="tag">YOLOv8</span><span class="tag">PyTorch</span><span class="tag">OpenCV</span><span class="tag">ONNX Runtime</span></div></div>
+        <div class="reveal skillset"><b>Security</b><div class="tags"><span class="tag">Threat modeling</span><span class="tag">CSP &amp; headers</span><span class="tag">Rate limiting</span><span class="tag">CodeQL</span><span class="tag">Argon2id auth</span></div></div>
       </div>
     </div>
   </section>
 
   <section id="contact" class="contact">
     <div class="wrap">
-      <h2>contact</h2>
+      <h2 class="reveal">contact</h2>
       <p>I'm graduating in May 2027 and interviewing now. The best way to reach me is email.</p>
       <div class="ctas">
         <a class="btn primary" href="mailto:dncanzano@icloud.com">dncanzano@icloud.com</a>
@@ -317,5 +349,93 @@ adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span 
   </div>
 </footer>
 
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Scroll reveal
+  var items = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  // Cursor spotlight
+  document.querySelectorAll('.card, .fact, .skillset').forEach(function (el) {
+    el.addEventListener('pointermove', function (ev) {
+      var r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+      el.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+    });
+  });
+
+  if (reduce) return;
+  var bg = document.getElementById('hero-bg');
+  var desktop = window.matchMedia('(min-width: 761px) and (pointer: fine)').matches;
+
+  function load(src) {
+    return new Promise(function (ok, fail) {
+      var t = document.createElement('script'); t.src = src; t.onload = ok; t.onerror = fail; document.head.appendChild(t);
+    });
+  }
+  function webgl() {
+    try { var c = document.createElement('canvas'); return !!(c.getContext('webgl') || c.getContext('experimental-webgl')); }
+    catch (e) { return false; }
+  }
+
+  // Desktop: Vanta.js 3D net. Phones (or no WebGL): a light 2D particle network.
+  if (desktop && webgl()) {
+    load('assets/js/three.min.js').then(function () { return load('assets/js/vanta.net.min.js'); }).then(function () {
+      window.VANTA.NET({
+        el: bg, mouseControls: true, touchControls: false, gyroControls: false,
+        minHeight: 200, minWidth: 200, scale: 1, scaleMobile: 1,
+        color: 0x58d68d, backgroundColor: 0x0d1117, points: 9, maxDistance: 21, spacing: 18, showDots: true
+      });
+      bg.classList.add('on');
+    }).catch(particles2d);
+  } else {
+    particles2d();
+  }
+
+  function particles2d() {
+    var c = document.createElement('canvas'), ctx = c.getContext('2d');
+    if (!ctx) return;
+    bg.appendChild(c); bg.classList.add('on');
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), w, h, pts = [];
+    function size() {
+      w = bg.clientWidth; h = bg.clientHeight;
+      c.width = w * dpr; c.height = h * dpr; c.style.width = w + 'px'; c.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.round(Math.min(60, w * h / 9000));
+      pts = [];
+      for (var i = 0; i < n; i++) pts.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35 });
+    }
+    size(); window.addEventListener('resize', size);
+    var visible = true;
+    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(bg);
+    (function tick() {
+      requestAnimationFrame(tick);
+      if (!visible) return;
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i]; p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+        ctx.fillStyle = 'rgba(88,214,141,.9)'; ctx.beginPath(); ctx.arc(p.x, p.y, 1.6, 0, 6.283); ctx.fill();
+        for (var j = i + 1; j < pts.length; j++) {
+          var q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = dx * dx + dy * dy;
+          if (d < 14000) { ctx.strokeStyle = 'rgba(88,214,141,' + (0.35 * (1 - d / 14000)) + ')'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke(); }
+        }
+      }
+    })();
+  }
+})();
+</script>
 </body>
 </html>
