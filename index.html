@@ -84,13 +84,15 @@
   /* projects */
   .projects { display: grid; gap: 22px; }
   .card {
-    display: grid; grid-template-columns: 1.05fr 1fr; gap: 0;
+    display: grid; grid-template-columns: 1fr; gap: 0;
     background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
   }
   .card:hover { border-color: #3a4350; }
-  .card .media { background: #0a0e13; border-right: 1px solid var(--line); display: flex; align-items: center; justify-content: center; min-height: 220px; }
-  .card .media img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
-  .card .body { padding: 24px 26px; display: flex; flex-direction: column; }
+  .card .media { background: radial-gradient(ellipse at 50% 40%, rgba(88,214,141,.07), transparent 65%), #0a0e13; border-bottom: 1px solid var(--line); }
+    .card .body { padding: 24px 28px 26px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
+  .card .body > h3, .card .body > .meta, .card .body > p { grid-column: 1; }
+  .card .body > ul { grid-column: 2; grid-row: 1 / span 3; margin-top: 4px; }
+  .card .body > .tags, .card .body > .links { grid-column: 1 / -1; }
   .card h3 { margin: 0 0 4px; font-size: 21px; }
   .meta { font: 13px var(--mono); color: var(--muted); margin: 0 0 12px; }
   .card p { margin: 0 0 12px; color: #cdd5de; }
@@ -102,32 +104,20 @@
   .badge { font: 600 11px var(--mono); color: #f0b429; border: 1px solid rgba(240,180,41,.4); border-radius: 6px; padding: 1px 7px; margin-left: 8px; vertical-align: 3px; }
 
 
-  /* 3D image wheel */
-  .ring3d { position: relative; width: 100%; height: 100%; min-height: 320px; perspective: 1200px; overflow: hidden; outline: none;
-    background: radial-gradient(ellipse at 50% 45%, rgba(88,214,141,.08), transparent 65%), #0a0e13; }
-  .ring3d:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
-  .ring-stage { position: absolute; inset: 0 0 48px; display: flex; align-items: center; justify-content: center; }
-  .ring { position: relative; width: 68%; aspect-ratio: 1.92; transform-style: preserve-3d;
-    cursor: grab; touch-action: pan-y; }
-  .ring.dragging { cursor: grabbing; }
-  .ring figure { position: absolute; inset: 0; margin: 0; border-radius: 8px; overflow: hidden;
-    border: 1px solid var(--line); background: #fff; backface-visibility: hidden; -webkit-backface-visibility: hidden;
-    box-shadow: 0 18px 40px rgba(0,0,0,.55); transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .9s, filter .9s; opacity: .55; filter: saturate(.7) brightness(.6); }
-  .ring figure.far { opacity: 0; }
-  .ring figure.front { opacity: 1; filter: none; }
-  .ring img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
-  .ring-ui { position: absolute; left: 0; right: 0; bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 14px; z-index: 2; }
-  .ring-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--text);
-    font: 20px/1 var(--sans); cursor: pointer; display: grid; place-items: center; padding: 0 0 2px; }
-  .ring-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .ring-cap { font: 12px var(--mono); color: var(--muted); min-width: 150px; text-align: center; }
 
-  /* code-style media panels for projects without screenshots */
-  .term { width: 100%; padding: 22px; font: 13px/1.7 var(--mono); color: var(--muted); }
-  .term .c { color: #6e7681; }
-  .term .k { color: var(--accent); }
-  .term .s { color: #79c0ff; }
-  .term .w { color: var(--text); }
+  /* 3D image carousel (Swiper "creative" effect) */
+  .swiper.shots { width: 100%; padding: 26px 0 46px; --swiper-theme-color: #58d68d; --swiper-navigation-size: 22px;
+    --swiper-pagination-bullet-inactive-color: #9aa5b1; --swiper-pagination-bottom: 14px; }
+  .shots .swiper-slide { width: 72%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #0a0e13;
+    box-shadow: 0 20px 50px rgba(0,0,0,.6); position: relative; }
+  .shots img { display: block; width: 100%; height: 100%; object-fit: contain; background: #0a0e13; user-select: none; }
+  .shots .cap { position: absolute; left: 10px; bottom: 10px; font: 12px var(--mono); background: rgba(13,17,23,.85); color: var(--text);
+    padding: 3px 8px; border-radius: 6px; }
+  .shots .ph { background: linear-gradient(135deg, #2b323c, #3a424d); display: flex; align-items: center; justify-content: center; text-align: center; }
+  .shots .ph b { display: block; font: 600 18px var(--mono); color: #c9d1d9; }
+  .shots .ph small { color: #8b949e; }
+  .shots .swiper-button-prev, .shots .swiper-button-next { width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(22,27,34,.85); border: 1px solid var(--line); }
 
   /* small cards row */
   .card.compact { grid-template-columns: 1fr; }
@@ -179,18 +169,18 @@
   }
 
   @media (max-width: 760px) {
+    .shots .swiper-slide { width: 84%; }
+    .shots .swiper-button-prev, .shots .swiper-button-next { display: none; }
+    .card .body { grid-template-columns: 1fr; }
+    .card .body > ul { grid-column: 1; grid-row: auto; }
     nav ul { display: none; }
     .seeking { border-radius: 14px; align-items: flex-start; }
     .seeking .dot { margin-top: 6px; }
     .hero { padding: 64px 0 48px; }
-    .card { grid-template-columns: 1fr; }
-    .card .media { border-right: 0; border-bottom: 1px solid var(--line); min-height: 0; }
-    .card .media img { max-height: 260px; }
-    .ring3d { min-height: 250px; }
-    .ring { width: 66%; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
+<link rel="stylesheet" href="assets/js/swiper-bundle.min.css">
 </head>
 <body>
 
@@ -244,20 +234,14 @@
 
         <article class="reveal card">
           <div class="media">
-            <div class="ring3d" data-ring role="region" aria-roledescription="carousel" aria-label="Meal Prep screenshots" tabindex="0">
-              <div class="ring-stage">
-                <div class="ring">
-                  <figure data-caption="Diary"><img src="assets/mealprep/diary.jpg" alt="Diary: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1000" height="522"></figure>
-                  <figure data-caption="Calendar trends"><img src="assets/mealprep/calendar.jpg" alt="Calendar trends view: each day's carbs, fat and protein against goals" loading="lazy" width="1000" height="522"></figure>
-                  <figure data-caption="Experiment scratchpad"><img src="assets/mealprep/experiment.jpg" alt="Experiment tab: foods placed across days, each day totaled against the plan" loading="lazy" width="1000" height="522"></figure>
-                  <figure data-caption="Full nutrient panel"><img src="assets/mealprep/nutrients.jpg" alt="Full nutrient panel: each nutrient against its target, with data coverage" loading="lazy" width="1000" height="522"></figure>
-                </div>
+            <div class="swiper shots" role="region" aria-label="Meal Prep screenshots">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="assets/mealprep/diary.jpg" alt="Diary: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1000" height="522"><span class="cap">Diary</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/calendar.jpg" alt="Calendar trends view: each day's carbs, fat and protein against goals" loading="lazy" width="1000" height="522"><span class="cap">Calendar trends</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/experiment.jpg" alt="Experiment tab: foods placed across days, each day totaled against the plan" loading="lazy" width="1000" height="522"><span class="cap">Experiment</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/nutrients.jpg" alt="Full nutrient panel: each nutrient against its target, with data coverage" loading="lazy" width="1000" height="522"><span class="cap">Nutrient panel</span></div>
               </div>
-              <div class="ring-ui">
-                <button class="ring-btn" data-dir="-1" aria-label="Previous screenshot">&#8249;</button>
-                <span class="ring-cap" aria-live="polite"></span>
-                <button class="ring-btn" data-dir="1" aria-label="Next screenshot">&#8250;</button>
-              </div>
+              <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
             </div>
           </div>
           <div class="body">
@@ -275,7 +259,17 @@
         </article>
 
         <article class="reveal card">
-          <div class="media"><img src="assets/dashboard.jpg" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1200" height="623"></div>
+          <div class="media">
+            <div class="swiper shots" role="region" aria-label="United Clash Dashboard screenshots">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="assets/dashboard.jpg" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1000" height="522"><span class="cap">Data tab</span></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Live tab</b><small>placeholder</small></div></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Graphic tab</b><small>placeholder</small></div></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Analysis tab</b><small>placeholder</small></div></div>
+              </div>
+              <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
+            </div>
+          </div>
           <div class="body">
             <h3>United Clash Dashboard</h3>
             <p class="meta">Summer 2026 · live</p>
@@ -292,12 +286,15 @@
 
         <article class="reveal card">
           <div class="media">
-            <pre class="term" aria-label="Bot pipeline: emulator screenshot to perception to game state to policy to tap"><span class="c"># perceive → decide → act</span>
-<span class="k">frame</span>  = adb.<span class="w">screenshot</span>()      <span class="c"># LDPlayer</span>
-<span class="k">units</span>  = yolov8.<span class="w">detect</span>(frame)  <span class="c"># custom v4</span>
-<span class="k">state</span>  = tracker.<span class="w">update</span>(units)
-<span class="k">action</span> = policy.<span class="w">choose</span>(state)
-adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span class="s">xy</span>)</pre>
+            <div class="swiper shots" role="region" aria-label="Clash Royale AI Bot screenshots">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 1</b><small>placeholder</small></div></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 2</b><small>placeholder</small></div></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 3</b><small>placeholder</small></div></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 4</b><small>placeholder</small></div></div>
+              </div>
+              <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
+            </div>
           </div>
           <div class="body">
             <h3>Clash Royale AI Bot <span class="badge">in progress</span></h3>
@@ -315,12 +312,15 @@ adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span 
 
         <article class="reveal card">
           <div class="media">
-            <pre class="term" aria-label="Platformer feature summary"><span class="c">// GameMaker Studio 2 · 2020–21</span>
-<span class="k">weapons</span>  = [<span class="s">pistol</span>, <span class="s">shotgun</span>, <span class="s">rifle</span>, <span class="s">laser</span>]
-<span class="k">enemies</span>  = <span class="w">7</span> types, own state machines
-<span class="k">rooms</span>    = <span class="w">5</span> + menu, checkpoints
-<span class="k">fix</span>      = blood fx → draw to layers
-<span class="c">// where I learned to code</span></pre>
+            <div class="swiper shots" role="region" aria-label="GameMaker Platformer screenshots">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 1</b><small>placeholder</small></div></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 2</b><small>placeholder</small></div></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 3</b><small>placeholder</small></div></div>
+                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 4</b><small>placeholder</small></div></div>
+              </div>
+              <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
+            </div>
           </div>
           <div class="body">
             <h3>GameMaker Platformer</h3>
@@ -477,60 +477,23 @@ adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span 
 })();
 </script>
 
+<script src="assets/js/swiper-bundle.min.js"></script>
 <script>
-// 3D image wheel: any [data-ring] with 2+ figures rotates; 1 figure stays static.
 (function () {
+  if (!window.Swiper) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.querySelectorAll('[data-ring]').forEach(function (root) {
-    var ring = root.querySelector('.ring'), figs = [].slice.call(ring.children), n = figs.length;
-    var cap = root.querySelector('.ring-cap'), idx = 0, timer = null, hover = false, visible = true;
-    if (n < 2) { root.querySelector('.ring-ui').style.display = 'none'; figs[0] && figs[0].classList.add('front'); return; }
-    var step = 34; // degrees between neighbours on the wheel
-    function radius() { return ring.offsetWidth * 1.8; } // big enough that neighbours sit behind the front image
-    var prevD = figs.map(function () { return null; });
-    function layout() { go(idx, true); }
-    function go(i, instant) {
-      idx = i;
-      var r = radius(), k = ((i % n) + n) % n;
-      figs.forEach(function (f, j) {
-        var d = ((j - k) % n + n) % n; if (d > n / 2) d -= n;          // signed distance from the front
-        var jump = instant || reduce || (prevD[j] !== null && Math.abs(d - prevD[j]) > 1);
-        f.style.transition = jump ? 'none' : '';
-        f.style.transform = 'translateZ(' + (-r) + 'px) rotateY(' + (d * step) + 'deg) translateZ(' + r + 'px)';
-        f.style.zIndex = String(10 - Math.abs(Math.round(d)));
-        f.classList.toggle('front', d === 0);
-        f.classList.toggle('far', Math.abs(d) > 1);
-        f.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
-        if (jump) f.offsetWidth;
-        prevD[j] = d;
-      });
-      cap.textContent = figs[k].getAttribute('data-caption') + '  ' + (k + 1) + '/' + n;
-    }
-    function play() {
-      clearInterval(timer);
-      if (reduce) return;
-      timer = setInterval(function () { if (!hover && visible && !document.hidden) go(idx + 1); }, 3800);
-    }
-    root.querySelectorAll('.ring-btn').forEach(function (b) {
-      b.addEventListener('click', function () { go(idx + Number(b.getAttribute('data-dir'))); play(); });
+  document.querySelectorAll('.shots').forEach(function (el) {
+    new Swiper(el, {
+      effect: 'creative', centeredSlides: true, slidesPerView: 'auto', loop: true, grabCursor: true,
+      speed: reduce ? 0 : 900, keyboard: { enabled: true, onlyInViewport: true },
+      autoplay: reduce ? false : { delay: 3600, disableOnInteraction: false, pauseOnMouseEnter: true },
+      creativeEffect: { limitProgress: 2,
+        prev: { shadow: true, translate: ['-70%', 0, -420], rotate: [0, 58, 0], opacity: .85 },
+        next: { shadow: true, translate: ['70%', 0, -420], rotate: [0, -58, 0], opacity: .85 } },
+      pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
+      navigation: { nextEl: el.querySelector('.swiper-button-next'), prevEl: el.querySelector('.swiper-button-prev') },
+      a11y: { prevSlideMessage: 'Previous screenshot', nextSlideMessage: 'Next screenshot' }
     });
-    root.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowRight') { go(idx + 1); play(); } else if (e.key === 'ArrowLeft') { go(idx - 1); play(); }
-    });
-    root.addEventListener('pointerenter', function () { hover = true; });
-    root.addEventListener('pointerleave', function () { hover = false; });
-    var x0 = null;
-    ring.addEventListener('pointerdown', function (e) { x0 = e.clientX; ring.classList.add('dragging'); ring.setPointerCapture(e.pointerId); });
-    ring.addEventListener('pointerup', function (e) {
-      ring.classList.remove('dragging');
-      if (x0 === null) return;
-      var dx = e.clientX - x0; x0 = null;
-      if (Math.abs(dx) > 35) { go(idx + (dx < 0 ? 1 : -1)); play(); }
-    });
-    ring.addEventListener('pointercancel', function () { x0 = null; ring.classList.remove('dragging'); });
-    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(root);
-    window.addEventListener('resize', layout);
-    layout(); play();
   });
 })();
 </script>
