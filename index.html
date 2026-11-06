@@ -108,7 +108,7 @@
   /* 3D image carousel (Swiper "creative" effect) */
   .swiper.shots { width: 100%; padding: 26px 0 46px; --swiper-theme-color: #58d68d; --swiper-navigation-size: 22px;
     --swiper-pagination-bullet-inactive-color: #9aa5b1; --swiper-pagination-bottom: 14px; }
-  .shots .swiper-slide { width: 72%; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #0a0e13;
+  .shots .swiper-slide { width: 72%; aspect-ratio: 1.915; border-radius: 10px; overflow: hidden; background: #0a0e13;
     box-shadow: 0 20px 50px rgba(0,0,0,.6); position: relative; }
   .shots img { display: block; width: 100%; height: 100%; object-fit: contain; background: #0a0e13; user-select: none; }
   .shots .cap { position: absolute; left: 10px; bottom: 10px; font: 12px var(--mono); background: rgba(13,17,23,.85); color: var(--text);
@@ -236,10 +236,10 @@
           <div class="media">
             <div class="swiper shots" role="region" aria-label="Meal Prep screenshots">
               <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="assets/mealprep/diary.jpg" alt="Diary: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1000" height="522"><span class="cap">Diary</span></div>
-                <div class="swiper-slide"><img src="assets/mealprep/calendar.jpg" alt="Calendar trends view: each day's carbs, fat and protein against goals" loading="lazy" width="1000" height="522"><span class="cap">Calendar trends</span></div>
-                <div class="swiper-slide"><img src="assets/mealprep/experiment.jpg" alt="Experiment tab: foods placed across days, each day totaled against the plan" loading="lazy" width="1000" height="522"><span class="cap">Experiment</span></div>
-                <div class="swiper-slide"><img src="assets/mealprep/nutrients.jpg" alt="Full nutrient panel: each nutrient against its target, with data coverage" loading="lazy" width="1000" height="522"><span class="cap">Nutrient panel</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/diary.jpg" alt="Diary: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1899" height="991"><span class="cap">Diary</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/calendar.jpg" alt="Calendar trends view: each day's carbs, fat and protein against goals" loading="lazy" width="1899" height="991"><span class="cap">Calendar trends</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/experiment.jpg" alt="Experiment tab: foods placed across days, each day totaled against the plan" loading="lazy" width="1899" height="991"><span class="cap">Experiment</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/nutrients.jpg" alt="Full nutrient panel: each nutrient against its target, with data coverage" loading="lazy" width="1899" height="991"><span class="cap">Nutrient panel</span></div>
               </div>
               <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
             </div>
@@ -254,7 +254,7 @@
               <li>594 automated tests; works with no signal and syncs through Cloudflare D1</li>
             </ul>
             <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Cloudflare Workers + D1</span><span class="tag">IndexedDB</span><span class="tag">Vitest</span></div>
-            <div class="links"><a href="https://github.com/Duncan-17/meal-prep-app" target="_blank" rel="noopener">Code →</a></div>
+            <div class="links"><a href="https://meal-prep-app.dncanzano.workers.dev" target="_blank" rel="noopener">Live app →</a><a href="https://github.com/Duncan-17/meal-prep-app" target="_blank" rel="noopener">Code →</a></div>
           </div>
         </article>
 
@@ -262,7 +262,7 @@
           <div class="media">
             <div class="swiper shots" role="region" aria-label="United Clash Dashboard screenshots">
               <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="assets/dashboard.jpg" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1000" height="522"><span class="cap">Data tab</span></div>
+                <div class="swiper-slide"><img src="assets/dashboard.jpg" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1899" height="991"><span class="cap">Data tab</span></div>
                 <div class="swiper-slide ph" aria-hidden="true"><div><b>Live tab</b><small>placeholder</small></div></div>
                 <div class="swiper-slide ph" aria-hidden="true"><div><b>Graphic tab</b><small>placeholder</small></div></div>
                 <div class="swiper-slide ph" aria-hidden="true"><div><b>Analysis tab</b><small>placeholder</small></div></div>
@@ -311,17 +311,6 @@
         </article>
 
         <article class="reveal card">
-          <div class="media">
-            <div class="swiper shots" role="region" aria-label="GameMaker Platformer screenshots">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 1</b><small>placeholder</small></div></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 2</b><small>placeholder</small></div></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 3</b><small>placeholder</small></div></div>
-                <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 4</b><small>placeholder</small></div></div>
-              </div>
-              <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
-            </div>
-          </div>
           <div class="body">
             <h3>GameMaker Platformer</h3>
             <p class="meta">High school · 2020–2021</p>
@@ -482,6 +471,11 @@
 (function () {
   if (!window.Swiper) return;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function sharpen(sw) {
+    sw = sw || this;
+    var a = sw.slides[sw.activeIndex];
+    if (a) a.style.transform = 'translate3d(' + Math.round(-a.swiperSlideOffset) + 'px, 0, 0)';
+  }
   document.querySelectorAll('.shots').forEach(function (el) {
     new Swiper(el, {
       effect: 'creative', centeredSlides: true, slidesPerView: 'auto', loop: true, grabCursor: true,
@@ -492,7 +486,13 @@
         next: { shadow: true, translate: ['70%', 0, -420], rotate: [0, -58, 0], opacity: .85 } },
       pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
       navigation: { nextEl: el.querySelector('.swiper-button-next'), prevEl: el.querySelector('.swiper-button-prev') },
-      a11y: { prevSlideMessage: 'Previous screenshot', nextSlideMessage: 'Next screenshot' }
+      a11y: { prevSlideMessage: 'Previous screenshot', nextSlideMessage: 'Next screenshot' },
+      roundLengths: true,
+      on: {
+        // Once a slide settles, drop its leftover sub-pixel 3D transform so the browser
+        // draws the screenshot at full sharpness instead of a resampled copy.
+        init: sharpen, transitionEnd: sharpen, resize: sharpen
+      }
     });
   });
 })();
