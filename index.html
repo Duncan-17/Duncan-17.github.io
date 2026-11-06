@@ -106,9 +106,9 @@
 
 
   /* 3D image carousel (Swiper "creative" effect) */
-  .swiper.shots { width: 100%; padding: 26px 0 46px; --swiper-theme-color: #58d68d; --swiper-navigation-size: 22px;
+  .swiper.shots { width: 100%; padding: 18px 0 42px; --swiper-theme-color: #58d68d; --swiper-navigation-size: 22px;
     --swiper-pagination-bullet-inactive-color: #9aa5b1; --swiper-pagination-bottom: 14px; }
-  .shots .swiper-slide { width: 72%; aspect-ratio: 1.915; border-radius: 10px; overflow: hidden; background: #0a0e13;
+  .shots .swiper-slide { width: 86%; aspect-ratio: 1.915; border-radius: 10px; overflow: hidden; background: #0a0e13;
     box-shadow: 0 20px 50px rgba(0,0,0,.6); position: relative; }
   .shots img { display: block; width: 100%; height: 100%; object-fit: contain; background: #0a0e13; user-select: none; }
   .shots .cap { position: absolute; left: 10px; bottom: 10px; font: 12px var(--mono); background: rgba(13,17,23,.85); color: var(--text);
@@ -118,6 +118,23 @@
   .shots .ph small { color: #8b949e; }
   .shots .swiper-button-prev, .shots .swiper-button-next { width: 40px; height: 40px; border-radius: 50%;
     background: rgba(22,27,34,.85); border: 1px solid var(--line); }
+
+
+  /* full-screen viewer */
+  .shots .swiper-pagination.swiper-pagination-horizontal { width: auto; left: 50%; transform: translateX(-50%); }
+  .fs-btn { position: absolute; right: 14px; bottom: 10px; z-index: 20; width: 36px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--line); background: rgba(22,27,34,.9); color: var(--text); cursor: pointer; display: grid; place-items: center; padding: 0; }
+  .fs-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .fs-btn svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .fs-btn .i-close, .is-full .fs-btn .i-open { display: none; }
+  .is-full .fs-btn .i-close { display: inline; }
+  .media.is-full { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
+    background: rgba(5,8,12,.97); border: 0; }
+  .media:fullscreen { background: #05080c; display: flex; align-items: center; justify-content: center; }
+  .is-full .swiper.shots { padding: 0 0 56px; }
+  .is-full .shots .swiper-slide { width: min(92vw, calc((100vh - 110px) * 1.915)); }
+  .is-full .fs-btn { right: 20px; bottom: 16px; }
+  body.no-scroll { overflow: hidden; }
 
   /* small cards row */
   .card.compact { grid-template-columns: 1fr; }
@@ -169,7 +186,7 @@
   }
 
   @media (max-width: 760px) {
-    .shots .swiper-slide { width: 84%; }
+    .shots .swiper-slide { width: 90%; }
     .shots .swiper-button-prev, .shots .swiper-button-next { display: none; }
     .card .body { grid-template-columns: 1fr; }
     .card .body > ul { grid-column: 1; grid-row: auto; }
@@ -242,11 +259,12 @@
                 <div class="swiper-slide"><img src="assets/mealprep/nutrients.jpg" alt="Full nutrient panel: each nutrient against its target, with data coverage" loading="lazy" width="1899" height="991"><span class="cap">Nutrient panel</span></div>
               </div>
               <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
+              <button class="fs-btn" type="button" aria-label="View screenshots full screen" title="Full screen"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="i-open" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="i-close" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
             </div>
           </div>
           <div class="body">
-            <h3>Meal Prep</h3>
-            <p class="meta">Fall 2026 · in daily use</p>
+            <h3>Meal Prep <span class="badge">in progress</span></h3>
+            <p class="meta">Fall 2026 – present · in daily use</p>
             <p>An offline-first meal-planning web app: build recipes from USDA data, schedule cooks on a calendar, track leftovers as fridge stock, and log meals against a full nutrient plan.</p>
             <ul>
               <li>User accounts with per-user sync; passwords are stretched with Argon2id in the browser, so the server never sees one</li>
@@ -268,6 +286,7 @@
                 <div class="swiper-slide ph" aria-hidden="true"><div><b>Analysis tab</b><small>placeholder</small></div></div>
               </div>
               <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
+              <button class="fs-btn" type="button" aria-label="View screenshots full screen" title="Full screen"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="i-open" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="i-close" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
             </div>
           </div>
           <div class="body">
@@ -294,6 +313,7 @@
                 <div class="swiper-slide ph" aria-hidden="true"><div><b>Screenshot 4</b><small>placeholder</small></div></div>
               </div>
               <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
+              <button class="fs-btn" type="button" aria-label="View screenshots full screen" title="Full screen"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="i-open" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="i-close" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
             </div>
           </div>
           <div class="body">
@@ -482,8 +502,8 @@
       speed: reduce ? 0 : 900, keyboard: { enabled: true, onlyInViewport: true },
       autoplay: reduce ? false : { delay: 3600, disableOnInteraction: false, pauseOnMouseEnter: true },
       creativeEffect: { limitProgress: 2,
-        prev: { shadow: true, translate: ['-70%', 0, -420], rotate: [0, 58, 0], opacity: .85 },
-        next: { shadow: true, translate: ['70%', 0, -420], rotate: [0, -58, 0], opacity: .85 } },
+        prev: { shadow: true, translate: ['-62%', 0, -480], rotate: [0, 58, 0], opacity: .85 },
+        next: { shadow: true, translate: ['62%', 0, -480], rotate: [0, -58, 0], opacity: .85 } },
       pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
       navigation: { nextEl: el.querySelector('.swiper-button-next'), prevEl: el.querySelector('.swiper-button-prev') },
       a11y: { prevSlideMessage: 'Previous screenshot', nextSlideMessage: 'Next screenshot' },
@@ -493,6 +513,36 @@
         // draws the screenshot at full sharpness instead of a resampled copy.
         init: sharpen, transitionEnd: sharpen, resize: sharpen
       }
+    });
+  });
+
+  // Full-screen button: real fullscreen where supported, otherwise a fixed overlay (iPhone Safari).
+  document.querySelectorAll('.fs-btn').forEach(function (btn) {
+    var media = btn.closest('.media'), sw = btn.closest('.shots');
+    function refresh() { if (sw.swiper) { sw.swiper.update(); } }
+    function setFull(on) {
+      media.classList.toggle('is-full', on);
+      document.body.classList.toggle('no-scroll', on && !document.fullscreenElement);
+      btn.setAttribute('aria-label', on ? 'Exit full screen' : 'View screenshots full screen');
+      setTimeout(refresh, 60);
+    }
+    btn.addEventListener('click', function () {
+      var full = media.classList.contains('is-full');
+      if (!full) {
+        if (media.requestFullscreen) { media.requestFullscreen().then(function () { setFull(true); }, function () { setFull(true); }); }
+        else if (media.webkitRequestFullscreen) { media.webkitRequestFullscreen(); setFull(true); }
+        else { setFull(true); }
+      } else {
+        if (document.fullscreenElement) document.exitFullscreen();
+        else if (document.webkitFullscreenElement) document.webkitExitFullscreen();
+        setFull(false);
+      }
+    });
+    document.addEventListener('fullscreenchange', function () {
+      if (!document.fullscreenElement && media.classList.contains('is-full')) setFull(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && media.classList.contains('is-full') && !document.fullscreenElement) setFull(false);
     });
   });
 })();
