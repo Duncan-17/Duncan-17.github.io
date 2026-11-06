@@ -101,6 +101,27 @@
   .links { display: flex; gap: 18px; font: 600 14px var(--mono); }
   .badge { font: 600 11px var(--mono); color: #f0b429; border: 1px solid rgba(240,180,41,.4); border-radius: 6px; padding: 1px 7px; margin-left: 8px; vertical-align: 3px; }
 
+
+  /* 3D image wheel */
+  .ring3d { position: relative; width: 100%; height: 100%; min-height: 320px; perspective: 1200px; overflow: hidden; outline: none;
+    background: radial-gradient(ellipse at 50% 45%, rgba(88,214,141,.08), transparent 65%), #0a0e13; }
+  .ring3d:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+  .ring-stage { position: absolute; inset: 0 0 48px; display: flex; align-items: center; justify-content: center; }
+  .ring { position: relative; width: 68%; aspect-ratio: 1.92; transform-style: preserve-3d;
+    cursor: grab; touch-action: pan-y; }
+  .ring.dragging { cursor: grabbing; }
+  .ring figure { position: absolute; inset: 0; margin: 0; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--line); background: #fff; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    box-shadow: 0 18px 40px rgba(0,0,0,.55); transition: transform .9s cubic-bezier(.2,.75,.2,1), opacity .9s, filter .9s; opacity: .55; filter: saturate(.7) brightness(.6); }
+  .ring figure.far { opacity: 0; }
+  .ring figure.front { opacity: 1; filter: none; }
+  .ring img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; user-select: none; -webkit-user-drag: none; pointer-events: none; }
+  .ring-ui { position: absolute; left: 0; right: 0; bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 14px; z-index: 2; }
+  .ring-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--text);
+    font: 20px/1 var(--sans); cursor: pointer; display: grid; place-items: center; padding: 0 0 2px; }
+  .ring-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .ring-cap { font: 12px var(--mono); color: var(--muted); min-width: 150px; text-align: center; }
+
   /* code-style media panels for projects without screenshots */
   .term { width: 100%; padding: 22px; font: 13px/1.7 var(--mono); color: var(--muted); }
   .term .c { color: #6e7681; }
@@ -165,6 +186,8 @@
     .card { grid-template-columns: 1fr; }
     .card .media { border-right: 0; border-bottom: 1px solid var(--line); min-height: 0; }
     .card .media img { max-height: 260px; }
+    .ring3d { min-height: 250px; }
+    .ring { width: 66%; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
@@ -220,7 +243,23 @@
       <div class="projects">
 
         <article class="reveal card">
-          <div class="media"><img src="assets/mealprep.jpg" alt="Meal Prep app diary screen: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1200" height="626"></div>
+          <div class="media">
+            <div class="ring3d" data-ring role="region" aria-roledescription="carousel" aria-label="Meal Prep screenshots" tabindex="0">
+              <div class="ring-stage">
+                <div class="ring">
+                  <figure data-caption="Diary"><img src="assets/mealprep/diary.jpg" alt="Diary: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1000" height="522"></figure>
+                  <figure data-caption="Calendar trends"><img src="assets/mealprep/calendar.jpg" alt="Calendar trends view: each day's carbs, fat and protein against goals" loading="lazy" width="1000" height="522"></figure>
+                  <figure data-caption="Experiment scratchpad"><img src="assets/mealprep/experiment.jpg" alt="Experiment tab: foods placed across days, each day totaled against the plan" loading="lazy" width="1000" height="522"></figure>
+                  <figure data-caption="Full nutrient panel"><img src="assets/mealprep/nutrients.jpg" alt="Full nutrient panel: each nutrient against its target, with data coverage" loading="lazy" width="1000" height="522"></figure>
+                </div>
+              </div>
+              <div class="ring-ui">
+                <button class="ring-btn" data-dir="-1" aria-label="Previous screenshot">&#8249;</button>
+                <span class="ring-cap" aria-live="polite"></span>
+                <button class="ring-btn" data-dir="1" aria-label="Next screenshot">&#8250;</button>
+              </div>
+            </div>
+          </div>
           <div class="body">
             <h3>Meal Prep</h3>
             <p class="meta">Fall 2026 · in daily use</p>
@@ -309,7 +348,7 @@ adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span 
       </div>
       <ul>
         <li>Built Python automation tools in the ESP framework to replace manual lab data transfers, saving an estimated dozens of hours a year</li>
-        <li>Refactored core modules of a 40,000+ line JavaScript laboratory management system (L7 LIMS ESP)</li>
+        <li>Helped refactor a 40,000+ line JavaScript laboratory system (L7 LIMS ESP) by mapping its core modules</li>
         <li>Developed and deployed in a Docker-based environment under HIPAA compliance and data-security constraints</li>
         <li>Co-designed a terminal-based automated installation framework with the team's lead developer</li>
       </ul>
@@ -435,6 +474,64 @@ adb.<span class="w">tap</span>(action.<span class="s">card</span>, action.<span 
       }
     })();
   }
+})();
+</script>
+
+<script>
+// 3D image wheel: any [data-ring] with 2+ figures rotates; 1 figure stays static.
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('[data-ring]').forEach(function (root) {
+    var ring = root.querySelector('.ring'), figs = [].slice.call(ring.children), n = figs.length;
+    var cap = root.querySelector('.ring-cap'), idx = 0, timer = null, hover = false, visible = true;
+    if (n < 2) { root.querySelector('.ring-ui').style.display = 'none'; figs[0] && figs[0].classList.add('front'); return; }
+    var step = 34; // degrees between neighbours on the wheel
+    function radius() { return ring.offsetWidth * 1.8; } // big enough that neighbours sit behind the front image
+    var prevD = figs.map(function () { return null; });
+    function layout() { go(idx, true); }
+    function go(i, instant) {
+      idx = i;
+      var r = radius(), k = ((i % n) + n) % n;
+      figs.forEach(function (f, j) {
+        var d = ((j - k) % n + n) % n; if (d > n / 2) d -= n;          // signed distance from the front
+        var jump = instant || reduce || (prevD[j] !== null && Math.abs(d - prevD[j]) > 1);
+        f.style.transition = jump ? 'none' : '';
+        f.style.transform = 'translateZ(' + (-r) + 'px) rotateY(' + (d * step) + 'deg) translateZ(' + r + 'px)';
+        f.style.zIndex = String(10 - Math.abs(Math.round(d)));
+        f.classList.toggle('front', d === 0);
+        f.classList.toggle('far', Math.abs(d) > 1);
+        f.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
+        if (jump) f.offsetWidth;
+        prevD[j] = d;
+      });
+      cap.textContent = figs[k].getAttribute('data-caption') + '  ' + (k + 1) + '/' + n;
+    }
+    function play() {
+      clearInterval(timer);
+      if (reduce) return;
+      timer = setInterval(function () { if (!hover && visible && !document.hidden) go(idx + 1); }, 3800);
+    }
+    root.querySelectorAll('.ring-btn').forEach(function (b) {
+      b.addEventListener('click', function () { go(idx + Number(b.getAttribute('data-dir'))); play(); });
+    });
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { go(idx + 1); play(); } else if (e.key === 'ArrowLeft') { go(idx - 1); play(); }
+    });
+    root.addEventListener('pointerenter', function () { hover = true; });
+    root.addEventListener('pointerleave', function () { hover = false; });
+    var x0 = null;
+    ring.addEventListener('pointerdown', function (e) { x0 = e.clientX; ring.classList.add('dragging'); ring.setPointerCapture(e.pointerId); });
+    ring.addEventListener('pointerup', function (e) {
+      ring.classList.remove('dragging');
+      if (x0 === null) return;
+      var dx = e.clientX - x0; x0 = null;
+      if (Math.abs(dx) > 35) { go(idx + (dx < 0 ? 1 : -1)); play(); }
+    });
+    ring.addEventListener('pointercancel', function () { x0 = null; ring.classList.remove('dragging'); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(root);
+    window.addEventListener('resize', layout);
+    layout(); play();
+  });
 })();
 </script>
 </body>
