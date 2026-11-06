@@ -82,6 +82,7 @@
   .fact b { display: block; font: 600 12px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
 
   /* projects */
+  #projects .wrap { max-width: 1120px; }
   .projects { display: grid; gap: 22px; }
   .card {
     display: grid; grid-template-columns: 1fr; gap: 0;
@@ -253,10 +254,10 @@
           <div class="media">
             <div class="swiper shots" role="region" aria-label="Meal Prep screenshots">
               <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="assets/mealprep/diary.jpg" alt="Diary: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1899" height="991"><span class="cap">Diary</span></div>
-                <div class="swiper-slide"><img src="assets/mealprep/calendar.jpg" alt="Calendar trends view: each day's carbs, fat and protein against goals" loading="lazy" width="1899" height="991"><span class="cap">Calendar trends</span></div>
-                <div class="swiper-slide"><img src="assets/mealprep/experiment.jpg" alt="Experiment tab: foods placed across days, each day totaled against the plan" loading="lazy" width="1899" height="991"><span class="cap">Experiment</span></div>
-                <div class="swiper-slide"><img src="assets/mealprep/nutrients.jpg" alt="Full nutrient panel: each nutrient against its target, with data coverage" loading="lazy" width="1899" height="991"><span class="cap">Nutrient panel</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/diary-920.jpg" srcset="assets/mealprep/diary-920.jpg 920w, assets/mealprep/diary-1200.jpg 1200w, assets/mealprep/diary-1500.jpg 1500w, assets/mealprep/diary-1899.jpg 1899w" sizes="(max-width: 760px) 90vw, 920px" alt="Diary: today's calories against the plan, macro rings, and meals logged from the fridge" loading="lazy" width="1900" height="992"><span class="cap">Diary</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/calendar-920.jpg" srcset="assets/mealprep/calendar-920.jpg 920w, assets/mealprep/calendar-1200.jpg 1200w, assets/mealprep/calendar-1500.jpg 1500w, assets/mealprep/calendar-1899.jpg 1899w" sizes="(max-width: 760px) 90vw, 920px" alt="Calendar trends view: each day's carbs, fat and protein against goals" loading="lazy" width="1900" height="992"><span class="cap">Calendar trends</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/experiment-920.jpg" srcset="assets/mealprep/experiment-920.jpg 920w, assets/mealprep/experiment-1200.jpg 1200w, assets/mealprep/experiment-1500.jpg 1500w, assets/mealprep/experiment-1894.jpg 1894w" sizes="(max-width: 760px) 90vw, 920px" alt="Experiment tab: foods placed across days, each day totaled against the plan" loading="lazy" width="1900" height="992"><span class="cap">Experiment</span></div>
+                <div class="swiper-slide"><img src="assets/mealprep/nutrients-920.jpg" srcset="assets/mealprep/nutrients-920.jpg 920w, assets/mealprep/nutrients-1200.jpg 1200w, assets/mealprep/nutrients-1500.jpg 1500w, assets/mealprep/nutrients-1896.jpg 1896w" sizes="(max-width: 760px) 90vw, 920px" alt="Full nutrient panel: each nutrient against its target, with data coverage" loading="lazy" width="1900" height="992"><span class="cap">Nutrient panel</span></div>
               </div>
               <div class="swiper-pagination"></div><div class="swiper-button-prev"></div><div class="swiper-button-next"></div>
               <button class="fs-btn" type="button" aria-label="View screenshots full screen" title="Full screen"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path class="i-open" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="i-close" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button>
@@ -280,7 +281,7 @@
           <div class="media">
             <div class="swiper shots" role="region" aria-label="United Clash Dashboard screenshots">
               <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="assets/dashboard.jpg" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1899" height="991"><span class="cap">Data tab</span></div>
+                <div class="swiper-slide"><img src="assets/dashboard-920.jpg" srcset="assets/dashboard-920.jpg 920w, assets/dashboard-1200.jpg 1200w" sizes="(max-width: 760px) 90vw, 920px" alt="United Clash Dashboard data tab: a sortable member table with a war-by-war heatmap" loading="lazy" width="1900" height="992"><span class="cap">Data tab</span></div>
                 <div class="swiper-slide ph" aria-hidden="true"><div><b>Live tab</b><small>placeholder</small></div></div>
                 <div class="swiper-slide ph" aria-hidden="true"><div><b>Graphic tab</b><small>placeholder</small></div></div>
                 <div class="swiper-slide ph" aria-hidden="true"><div><b>Analysis tab</b><small>placeholder</small></div></div>
@@ -522,6 +523,7 @@
     function refresh() { if (sw.swiper) { sw.swiper.update(); } }
     function setFull(on) {
       media.classList.toggle('is-full', on);
+      if (on) media.querySelectorAll('img[sizes]').forEach(function (im) { im.sizes = '92vw'; });
       document.body.classList.toggle('no-scroll', on && !document.fullscreenElement);
       btn.setAttribute('aria-label', on ? 'Exit full screen' : 'View screenshots full screen');
       setTimeout(refresh, 60);
